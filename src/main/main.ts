@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
 import { app, BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
-import { fillTestDatabase } from "./dbFiller";
+import { fillTestDatabase } from "../database/dbFiller";
 import { SaleMainListRow, getDailySales } from "./SaleParser";
 
 
@@ -26,7 +26,7 @@ const createMainWindow = () => {
     },
     show: false
   });
-  win.loadURL(path.join(__dirname, "../src/index.html"));
+  win.loadURL(path.join(__dirname, "../../src/main/index.html"));
 
   
   win.once('ready-to-show', () => {

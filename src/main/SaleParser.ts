@@ -1,6 +1,6 @@
-import { Sale } from "./entities/Sale";
-import * as dayjs from "dayjs";
 import { Connection } from "typeorm";
+import { Sale } from "../database/entities/Sale";
+import * as dayjs from "dayjs";
 
 
 export interface SaleMainListRow {
@@ -16,16 +16,13 @@ function parseSales(sales: Sale[]): SaleMainListRow[] {
 
   sales.forEach(sale => {
     let totalPays: number = 0;
-    console.log("SALE ID: ", sale.id)
     sale.payments.forEach(pay => {
-      console.log("PAYMENT AMOUNT: ", pay.amount, "TYPE: ", typeof pay.amount)
       if(pay.currency.id != 1) {
         const totalPay = pay.amount / pay.rate;
         totalPays += totalPay;
       } else {
         totalPays += pay.amount;
       }
-      console.log("")
     })
 
     const saleToPrint = {

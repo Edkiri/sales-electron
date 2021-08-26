@@ -2,16 +2,12 @@ const mainDate = document.getElementById("mainDate");
 mainDate.valueAsDate = new Date();
 window.api.send('getDailySales', new Date(mainDate.value));
 
-let date;
 function handler(e) {
   date = new Date(e.target.value);
-  console.log(date);
   window.api.send('getDailySales', date);
 }
 
-
 (window).api.recieve("printSales", (salesToPrint) =>  {
-  console.log(salesToPrint);
   const mainSaleList = document.getElementById('mainSaleList');
   mainSaleList.innerHTML = "";
   const headerList = document.createElement('li');

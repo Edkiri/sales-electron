@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {})
 contextBridge.exposeInMainWorld(
   "api", {
     send: (channel: string, data?: any) => {
-      let validChannels = ["getDailySales", "getDatabase"];
+      let validChannels = ["getDailySales"];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
       }

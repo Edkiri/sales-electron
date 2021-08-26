@@ -6,7 +6,7 @@
   "password": "secret",
   "database": "test",
   "entities": [
-    "./dist/entities/**/*.js"
+    "./dist/database/entities/**/*.js"
   ],
   "synchronize": true
 }
