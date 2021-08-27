@@ -4,6 +4,7 @@ import { app, BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
 import { fillTestDatabase } from "../database/dbFiller";
 import { SaleMainListRow, getDailySales } from "./SaleParser";
+import { Client } from "../database/entities/Client";
 
 
 let win: BrowserWindow;
@@ -51,7 +52,18 @@ app.on("window-all-closed", () => {
 });
 
 
-ipcMain.on('getDailySales', async (event, date) => {
+ipcMain.on('getDailySales', async (event, date: Date) => {
   const salesToPrint: SaleMainListRow[] = await getDailySales(connection, date)
   event.sender.send('printSales', salesToPrint);
 });
+
+ipcMain.on('verifyClient', async (event, clientIdCard: string) => {
+  const client: Client = await connection
+    .getRepository(Client)
+    .createQueryBuilder("client")
+    .where("client.identity_card = :clientIdCard", {clientIdCard: clientIdCard})
+    .getOne()
+  if(client) {
+    event.sender.send('printClient', client);
+  }
+})

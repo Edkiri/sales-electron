@@ -50,15 +50,13 @@ export async function fillTestDatabase(connection: Connection) {
     const client = await connection.getRepository(Client).save({
       name: "Eduardo", 
       identity_card: "V-25899242",
-      phone_number: "0424-816-7122",
-      email: "eduardokiriakos@gmail.com"
+      phone_number: "0424-816-7122"
     })
 
     const otherClient = await connection.getRepository(Client).save({
       name: "Eduardo Kiriakos", 
       identity_card: "V-25897242",
-      phone_number: "0424-816-6122",
-      email: "eduardokiriakos@hotmail.com"
+      phone_number: "0424-816-6122"
     })
   
     const codo = await connection.getRepository(Product).save({

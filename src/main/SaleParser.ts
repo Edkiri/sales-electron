@@ -2,14 +2,12 @@ import { Connection } from "typeorm";
 import { Sale } from "../database/entities/Sale";
 import * as dayjs from "dayjs";
 
-
 export interface SaleMainListRow {
   id: number,
   state: string,
   description: string,
   total: number
 }
-
 
 function parseSales(sales: Sale[]): SaleMainListRow[] {
   let salesToPrint: SaleMainListRow[] = [];

@@ -11,10 +11,10 @@ export class Client {
   })
   name: string;
   
-  // @Column({
-  //   unique: true
-  // })
-  // identity_card: string;
+  @Column({
+    unique: true
+  })
+  identity_card: string;
   
   @Column("varchar", { 
     length: 60,
@@ -22,9 +22,4 @@ export class Client {
   })
   phone_number: string;
   
-  @Column({
-    nullable: true
-  })
-  email: string;
-
 }
