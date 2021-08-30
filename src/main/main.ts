@@ -13,7 +13,7 @@ createConnection()
   .then((conn: Connection) => {
     connection = conn;
     fillTestDatabase(conn);
-  }).catch(error => console.log(error));
+  }).catch(error => console.error(error));
 
 const createMainWindow = () => {
   win = new BrowserWindow({
@@ -61,9 +61,82 @@ ipcMain.on('verifyClient', async (event, clientIdCard: string) => {
   const client: Client = await connection
     .getRepository(Client)
     .createQueryBuilder("client")
-    .where("client.identity_card = :clientIdCard", {clientIdCard: clientIdCard})
+    .where("client.identityCard = :clientIdCard", {clientIdCard: clientIdCard})
     .getOne()
   if(client) {
     event.sender.send('printClient', client);
+  } else {
+    const newClientWin = new BrowserWindow({
+      parent: win,
+      modal: true,
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        enableRemoteModule: false,
+        preload: path.join(__dirname, 'preload.js')
+      },
+    })
+    newClientWin.loadURL(path.join(__dirname, "../../src/createClient/createOrUpdateClientForm.html"));
+    newClientWin.once('ready-to-show', () => {
+      newClientWin.show();
+      newClientWin.webContents.openDevTools();
+      newClientWin.webContents.send('newClientIdCard', clientIdCard);
+    });
+  }
+})
+
+ipcMain.on('createClient', async (event, newClientData: any) => {
+  try {
+    const client = await createClient(newClientData);
+    win.webContents.send("printClient", client);
+    event.sender.send('closeWindow');
+  } catch(err) {
+    console.error(err)
+  }
+});
+
+
+const createClient = async (newClientData: any): Promise<Client> => {
+  const client = await connection.getRepository(Client).save({
+    name: newClientData.name,
+    identityCard: newClientData.idCard,
+    phoneNumber: newClientData.phoneNumber
+  })
+  return client;
+}
+
+ipcMain.on("displayClientForm", (event, client) => {
+  const updateClientWin = new BrowserWindow({
+    parent: win,
+    modal: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
+      preload: path.join(__dirname, 'preload.js')
+    },
+  })
+  updateClientWin.loadURL(path.join(__dirname, "../../src/createClient/createOrUpdateClientForm.html"));
+    updateClientWin.once('ready-to-show', () => {
+      updateClientWin.show();
+      updateClientWin.webContents.openDevTools();
+      updateClientWin.webContents.send('printClientInfo', client);
+    });
+})
+
+ipcMain.on("updateClient", async (event, clientData) => {
+  try {
+    const client = await connection.getRepository(Client).save({
+      id: clientData.id,
+      name: clientData.name,
+      identityCard: clientData.identityCard,
+      phoneNumber: clientData.phoneNumber
+    })
+    win.webContents.send("printClient", client);
+    event.sender.send('closeWindow');
+  } catch(err) {
+    console.error("Error actualizando el cliente! -", err);
   }
 })

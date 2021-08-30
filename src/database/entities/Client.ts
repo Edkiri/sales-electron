@@ -14,12 +14,11 @@ export class Client {
   @Column({
     unique: true
   })
-  identity_card: string;
+  identityCard: string;
   
   @Column("varchar", { 
     length: 60,
     nullable: true
   })
-  phone_number: string;
-  
+  phoneNumber: string;
 }
