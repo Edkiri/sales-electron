@@ -4,24 +4,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crear Nuevo Cliente</title>
+  <title>Buscar Cliente</title>
 </head>
 <body>
   <button type="button" onclick="window.close()">Atrás</button>
-  <div class="newClientContainer">
+  <label for="nameInput">Buscar por nombre</label>
+  <input type="text" id="nameInput">
 
-    <form id="clientForm">
-     
-    </form>
-  </div>
+  <ol id="clientTree">
+    
+  </ol>
 
-  <script src="./CreateOrUpdateClientForm.js"></script>
-  <script>
-
-    window.api.recieve("closeWindow", () => {
-      window.close();
-    })
-
+  <script src="./searchClient.js">
   </script>
 </body>
 </html>
