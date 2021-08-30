@@ -98,12 +98,16 @@ ipcMain.on('createClient', async (event, newClientData: any) => {
 
 
 const createClient = async (newClientData: any): Promise<Client> => {
-  const client = await connection.getRepository(Client).save({
-    name: newClientData.name,
-    identityCard: newClientData.idCard,
-    phoneNumber: newClientData.phoneNumber
-  })
-  return client;
+  try {
+    const client = await connection.getRepository(Client).save({
+      name: newClientData.name,
+      identityCard: newClientData.idCard,
+      phoneNumber: newClientData.phoneNumber
+    })
+    return client;
+  } catch(err) {
+    console.error("Error creando el cliente.", err);
+  }
 }
 
 ipcMain.on("displayClientForm", (event, client) => {
@@ -137,6 +141,50 @@ ipcMain.on("updateClient", async (event, clientData) => {
     win.webContents.send("printClient", client);
     event.sender.send('closeWindow');
   } catch(err) {
-    console.error("Error actualizando el cliente! -", err);
+    console.error("Error actualizando el cliente.", err);
+  }
+})
+
+ipcMain.on("displaySearchClientWindow", (event) => {
+  const searchClientWin = new BrowserWindow({
+    parent: win,
+    modal: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
+      preload: path.join(__dirname, 'preload.js')
+    },
+  })
+  searchClientWin.loadURL(path.join(__dirname, "../../src/createSale/searchClient.html"));
+    searchClientWin.once('ready-to-show', () => {
+      searchClientWin.show();
+      // searchClientWin.webContents.openDevTools();
+    });
+})
+
+ipcMain.on("searchClient", async (event, clientName: string) => {
+  try {
+    const clients = await connection.getRepository(Client)
+      .createQueryBuilder("client")
+      .where("LOWER(client.name) LIKE '%' || LOWER(:clientName) || '%'", {clientName: clientName})
+      .getMany()
+    event.sender.send("printClients", clients);
+  } catch(err) {
+    console.error("Error buscando clientes.", err);
+  }
+})
+
+ipcMain.on("selectClient", async (event, clientId) => {
+  try {
+    const client = await connection.getRepository(Client)
+      .createQueryBuilder("client")
+      .where("client.id = :clientId", {clientId: clientId})
+      .getOne()
+    win.webContents.send("printClient", client);
+    event.sender.send("closeWindow");
+  } catch(err) {
+    console.error("Error seleccionando el cliente.", err);
   }
 })

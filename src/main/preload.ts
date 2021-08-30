@@ -10,7 +10,10 @@ contextBridge.exposeInMainWorld(
         "verifyClient", 
         "createClient", 
         "displayClientForm", 
-        "updateClient"
+        "updateClient",
+        "displaySearchClientWindow",
+        "searchClient",
+        "selectClient"
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);

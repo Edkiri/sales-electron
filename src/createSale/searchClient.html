@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Cliente</title>
+</head>
+<body>
+  <button type="button" onclick="window.close()">Atrás</button>
+  <label for="nameInput">Buscar por nombre</label>
+  <input type="text" id="nameInput">
+
+  <ol id="clientTree">
+    
+  </ol>
+
+  <script>
+
+    window.api.recieve("closeWindow", () => {
+      window.close();
+    })
+
+    window.api.recieve("printClients", (clients) => {
+      const clientTree = document.getElementById("clientTree");
+      clientTree.innerHTML = "";
+      printHeaderTree(clientTree);
+      clients.forEach(client => {
+        const treeRow = document.createElement('li');
+        treeRow.dataset.clientId = client.id;
+        const name = document.createElement('span');
+        name.textContent = client.name;
+        const idCard = document.createElement('span');
+        idCard.textContent = client.identityCard;
+        treeRow.append(name, idCard);
+        clientTree.append(treeRow);
+        treeRow.ondblclick = (event) => {
+          if(event.target.nodeName === 'LI') {
+            const clientId = event.target.dataset.clientId;
+            window.api.send("selectClient", clientId);
+          } else {
+            const clientId = event.target.parentElement.dataset.clientId;
+            window.api.send("selectClient", clientId);
+          }
+        }
+      })
+    })
+
+
+    const clientTree = document.getElementById("clientTree");
+    const nameInput = document.getElementById("nameInput");
+    nameInput.addEventListener("keydown", (event) => {
+      if(event.key === "Enter") {
+        window.api.send("searchClient", nameInput.value);
+      }
+    })
+    
+    function printHeaderTree(clientTree) {
+      const treeRow = document.createElement('li');
+      const name = document.createElement('span');
+      name.textContent = "Nombre";
+      const idCard = document.createElement('span');
+      idCard.textContent = "Cédula";
+      treeRow.append(name, idCard);
+      clientTree.append(treeRow);
+    }
+    nameInput.focus();
+  </script>
+</body>
+</html>

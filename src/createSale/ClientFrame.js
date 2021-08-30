@@ -13,6 +13,7 @@ class ClientFrame {
     
     this.preIdCard = document.createElement('select');
     this.idCard = document.createElement('input');
+    this.searchClientBtn = document.createElement('button');
     this.client = client;
     this.initFrame();
     if(this.client) {
@@ -40,10 +41,15 @@ class ClientFrame {
         window.api.send("verifyClient", clientIdCardString);
       }
     })
-
+    this.searchClientBtn.textContent = "Buscar";
+    this.searchClientBtn.onclick = () => {
+      window.api.send("displaySearchClientWindow");
+    }
+    
     this.container.appendChild(this.title);
     this.container.appendChild(this.preIdCard);
     this.container.appendChild(this.idCard);
+    this.container.appendChild(this.searchClientBtn);
   }
   
   printClient(client) {
@@ -51,6 +57,7 @@ class ClientFrame {
 
     this.preIdCard.style.display = "none";
     this.idCard.style.display = "none";
+    this.searchClientBtn.style.display = "none";
 
     this.clientName.style.display = "inline-block";
     this.clientName.textContent = client.name;
@@ -65,20 +72,19 @@ class ClientFrame {
     }
     this.container.appendChild(this.detailBtn);
 
-    // this.preIdCard.value = client.identityCard.split("-")[0];
-    // this.idCard.value = client.identityCard.split("-")[1];
-    
     this.changeClientBtn.style.display = "inline-block";
     this.changeClientBtn.textContent = "Cambiar";
     this.container.appendChild(this.changeClientBtn);
     this.changeClientBtn.onclick = () => {
-      this.clientName.remove();
-      this.changeClientBtn.remove();
-      this.detailBtn.remove();
+      this.clientName.style.display = 'none';
+      this.changeClientBtn.style.display = 'none';
+      this.detailBtn.style.display = 'none';
+      this.changeClientBtn.style.display = 'none';
       this.client = null;
       this.preIdCard.style.display = "inline-block";
       this.idCard.value = "";
       this.idCard.style.display = "inline-block";
+      this.searchClientBtn.style.display = "inline-block";
     }
   }
 }
