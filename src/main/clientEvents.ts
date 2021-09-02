@@ -4,7 +4,7 @@ import { BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
 
 
-export function runClientMainEvents(win: BrowserWindow, connection: Connection): void {
+export function addClientEvents(win: BrowserWindow, connection: Connection): void {
   
   ipcMain.on('verifyClient', async (event, clientIdCard: string) => {
     const client: Client = await connection

@@ -18,7 +18,9 @@ contextBridge.exposeInMainWorld(
 
         "displayProductsWindow",
         "searchProductByName",
-        "sendOrderData"
+        "sendOrderData",
+
+        "createPayment"
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
