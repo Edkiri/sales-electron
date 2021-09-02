@@ -1,5 +1,5 @@
 
-class PreOrder {
+class PreOrderFrame {
   constructor(containerId) {
     this.parent = document.getElementById(containerId);
     
@@ -10,11 +10,11 @@ class PreOrder {
     this.amountLabel = document.createElement('label');
     this.amount = document.createElement('input');
 
-    this.initPreOrder();
+    this.init();
     this.parent.appendChild(this.container);
   }
 
-  initPreOrder() {
+  init() {
     this.productNameSpan.textContent = "Selecciona un producto.";
 
     this.priceLabel.textContent = "Precio";
@@ -34,13 +34,13 @@ class PreOrder {
     );
   };
 
-  updatePreOrder(productName, productPrice) {
+  update(productName, productPrice) {
     this.productNameSpan.textContent = productName;
     this.price.value = productPrice;
     this.amount.value = 1;
   }
 
-  disablePreOrder() {
+  disable() {
     this.productNameSpan.textContent = "Selecciona un producto.";
     this.price.value = "";
     this.amount.value = "";

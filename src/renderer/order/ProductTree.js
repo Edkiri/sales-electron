@@ -6,7 +6,7 @@ class ProductTree {
     this.createHeader();
     this.container.appendChild(this.treeContainer);
 
-    this.preOrder = new PreOrder(containerId);
+    this.preOrder = new PreOrderFrame(containerId);
 
     this.submitBtn = document.createElement('button');
     this.submitBtn.textContent = "Agregar";
@@ -36,7 +36,7 @@ class ProductTree {
   addListeners() {
 
     window.api.recieve("printProducts", (products) => {
-      this.preOrder.disablePreOrder();
+      this.preOrder.disable();
       this.submitBtn.disabled = true;
       this.treeContainer.innerHTML = "";
       this.createHeader();
@@ -76,9 +76,9 @@ class ProductTree {
 
 
   selectRow(treeRow) {
-    this.resetSelectRow();
+    this.unselectRow();
     treeRow.classList.add("selected");
-    this.preOrder.updatePreOrder(
+    this.preOrder.update(
       treeRow.dataset.productName, 
       treeRow.dataset.productPrice
     );
@@ -86,7 +86,7 @@ class ProductTree {
   }
 
 
-  resetSelectRow() {
+  unselectRow() {
     const selectedRow = document.querySelector('.selected');
     if (selectedRow) {
       selectedRow.classList.remove('selected');
