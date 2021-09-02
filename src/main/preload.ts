@@ -7,13 +7,18 @@ contextBridge.exposeInMainWorld(
     send: (channel: string, data?: any) => {
       let validChannels = [
         "getDailySales", 
+        
         "verifyClient", 
         "createClient", 
         "displayClientForm", 
         "updateClient",
         "displaySearchClientWindow",
         "searchClient",
-        "selectClient"
+        "selectClient",
+
+        "displayProductsWindow",
+        "searchProductByName",
+        "sendOrderData"
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);

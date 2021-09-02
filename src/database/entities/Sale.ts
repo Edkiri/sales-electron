@@ -12,8 +12,6 @@ export class Sale {
   @Column("date")
   date: Date;
 
-  // @ManyToOne(() => Client, (client: Client) => client.id)
-  // client: Client;
   @ManyToOne('Client')
   client: Client;
 

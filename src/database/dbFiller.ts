@@ -62,13 +62,20 @@ export async function fillTestDatabase(connection: Connection) {
     const codo = await connection.getRepository(Product).save({
       name: "Codo de 1/2\"",
       price: 12.5,
-      stock: 10
+      stock: 10,
+      brand: "De la buena",
+      reference: "Codo Media",
+      code: 586147
+
     })
   
     const tubo = await connection.getRepository(Product).save({
       name: "Tubo de 1/2\"",
       price: 5.0,
-      stock: 5
+      stock: 5,
+      brand: "De la mala",
+      reference: "Tubo Media",
+      code: 699842
     })
   
     const sale = await connection.getRepository(Sale).save({
