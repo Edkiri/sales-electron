@@ -1,4 +1,7 @@
-
+let rate;
+window.api.recieve('setDailyRate', rate => {
+  dailyRate = rate;
+})
 
 class PaymentTree {
   constructor(parentId) {
@@ -6,22 +9,64 @@ class PaymentTree {
     this.tree = document.createElement('ol');
     this.createHeader()
     this.parent.appendChild(this.tree);
+
+    this.addPayBtn = document.createElement('button');
+    this.addPayBtn.textContent = "Pago";
+    this.addPayBtn.onclick = () => {
+      this.createPayment(false)
+    };
+
+    this.addReturnBtn = document.createElement('button');
+    this.addReturnBtn.textContent = "Vuelto";
+    this.addReturnBtn.onclick = () => {
+      this.createPayment(true);
+    }
+    this.parent.append(this.addPayBtn, this.addReturnBtn);
+    
+    this.addListeners();
+
   }
 
   createHeader() {
-    const rowHeader = document.createElement('li');
+    const headerTree = document.createElement('li');
     const amount = document.createElement('span');
     const currency = document.createElement('span');
     const method = document.createElement('span');
     amount.textContent = "Monto";
     currency.textContent = "Moneda";
     method.textContent = "Método";
-    rowHeader.append(amount, currency, method);
-    this.tree.appendChild(rowHeader);
+    headerTree.append(amount, currency, method);
+    this.tree.appendChild(headerTree);
   }
 
-  createPayment() {
-    window.api.send("createPayment");
+  createPayment(isReturn) {
+    
+    window.api.send("createPayment", isReturn);
+  }
+
+  addPayment(paymentData) {
+    const treeRow = document.createElement('li');
+    treeRow.classList.add("paymentRow");
+    treeRow.dataset.currencyId = paymentData.currency.id;
+    treeRow.dataset.methodId = paymentData.method.id;
+    treeRow.dataset.accountId = paymentData.accountId;
+    let amount = document.createElement('span');
+    const currency = document.createElement('span');
+    const method = document.createElement('span');
+    amount.textContent = paymentData.amount;
+    if (paymentData.isReturn) amount.textContent = `-${paymentData.amount}`;
+    currency.textContent = paymentData.currency.name;
+    method.textContent = paymentData.method.name;
+    treeRow.append(amount, currency, method);
+    this.tree.appendChild(treeRow);
+  }
+
+  addListeners() {
+
+    window.api.recieve('addPaymentToTree', paymentData => {
+      this.addPayment(paymentData);
+    })
+
   }
 
 }

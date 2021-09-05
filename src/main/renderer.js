@@ -1,6 +1,13 @@
 const mainDate = document.getElementById("mainDate");
 mainDate.valueAsDate = new Date();
 window.api.send('getDailySales', new Date(mainDate.value));
+let dailyRate;
+window.api.send('getDailyRate');
+window.api.recieve('rateValue', rateValue => {
+  dailyRate = rateValue;
+});
+
+const rateFrame = new RateFrame("rateContainer");
 
 function handler(e) {
   date = new Date(e.target.value);
@@ -65,3 +72,8 @@ function handler(e) {
     mainSaleList.appendChild(salesListRow);
   })
 })
+
+const addSaleBtn = document.getElementById('addSaleBtn');
+addSaleBtn.onclick = () => {
+  window.api.send('createSale');
+}

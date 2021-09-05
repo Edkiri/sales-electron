@@ -4,9 +4,9 @@ import { app, BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
 import { fillTestDatabase } from "../database/dbFiller";
 import { SaleMainListRow, getDailySales } from "./SaleParser";
-import { addClientEvents } from "./clientEvents";
-import { addOrderEvents } from "./orderEvents";
-
+import { addClientEvents } from "./ipcMainEvents/clientEvents";
+import { addOrderEvents } from "./ipcMainEvents/orderEvents";
+import { addPaymentEvents } from "./ipcMainEvents/paymentEvents";
 
 let win: BrowserWindow;
 let connection: Connection;
@@ -17,9 +17,11 @@ createConnection()
     fillTestDatabase(connection);
     addClientEvents(win, connection);
     addOrderEvents(win, connection);
+    addPaymentEvents(win, connection);
 
   }).catch(error => console.error(error));
 
+let DAILY_RATE: number; // It is assumed that is constant for the day, but user can change it.
 const createMainWindow = () => {
   win = new BrowserWindow({
     width: 800,
@@ -61,3 +63,18 @@ ipcMain.on('getDailySales', async (event, date: Date) => {
   const salesToPrint: SaleMainListRow[] = await getDailySales(connection, date)
   event.sender.send('printSales', salesToPrint);
 });
+
+ipcMain.on("setDailyRate", (event, dailyRate) => {
+  if (dailyRate) {
+    DAILY_RATE = dailyRate;
+    event.sender.send('rateValue', DAILY_RATE);
+  }
+})
+
+ipcMain.on('createSale', (event) => {
+  win.loadURL(path.join(__dirname, "../../src/renderer/sale/createOrUpdateSale.html"));
+})
+
+ipcMain.on("getDailyRate", e => {
+  if (DAILY_RATE) e.sender.send('rateValue', DAILY_RATE);
+})

@@ -1,9 +1,11 @@
-const clientFrame = new ClientFrame("clientContainer");
-
-const orderTree = new OrderTree("ordersContainer");
+let dailyRate;
+window.api.send("getDailyRate");
+window.api.recieve('rateValue', rate => {
+  dailyRate = rate;
+})
 
 const paymentTree = new PaymentTree("paymentsContainer");
 
-window.api.recieve("printClient", (client) => {
-  clientFrame.printClient(client);
-})
+const orderTree = new OrderTree("ordersContainer");
+
+const clientFrame = new ClientFrame("clientContainer");

@@ -19,6 +19,8 @@ class ClientFrame {
     if(this.client) {
       this.printClient(this.client);
     }
+
+    this.addEventListener();
   }
   initFrame() {
     this.title.textContent = "Cliente";
@@ -86,5 +88,13 @@ class ClientFrame {
       this.idCard.style.display = "inline-block";
       this.searchClientBtn.style.display = "inline-block";
     }
+  }
+
+  addEventListener() {
+
+    window.api.recieve("printClient", (client) => {
+      this.printClient(client);
+    })
+    
   }
 }

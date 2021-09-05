@@ -6,7 +6,12 @@ contextBridge.exposeInMainWorld(
   "api", {
     send: (channel: string, data?: any) => {
       let validChannels = [
-        "getDailySales", 
+        
+        "getDailySales",
+        "setDailyRate",
+        "createSale",
+        "getDailyRate",
+
         
         "verifyClient", 
         "createClient", 
@@ -20,7 +25,8 @@ contextBridge.exposeInMainWorld(
         "searchProductByName",
         "sendOrderData",
 
-        "createPayment"
+        "createPayment",
+        "sendPaymentData"
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);

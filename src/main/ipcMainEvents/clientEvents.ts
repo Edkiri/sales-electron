@@ -1,4 +1,4 @@
-import { Client } from "../database/entities/Client";
+import { Client } from "../../database/entities/Client";
 import { Connection } from "typeorm";
 import { BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
@@ -23,10 +23,10 @@ export function addClientEvents(win: BrowserWindow, connection: Connection): voi
           nodeIntegration: false,
           contextIsolation: true,
           enableRemoteModule: false,
-          preload: path.join(__dirname, 'preload.js')
+          preload: path.join(__dirname, '../preload.js')
         },
       })
-      newClientWin.loadURL(path.join(__dirname, "../../src/renderer/client/createOrUpdateClientForm.html"));
+      newClientWin.loadURL(path.join(__dirname, "../../../src/renderer/client/createOrUpdateClientForm.html"));
       newClientWin.once('ready-to-show', () => {
         newClientWin.show();
         newClientWin.webContents.openDevTools();
@@ -68,10 +68,10 @@ export function addClientEvents(win: BrowserWindow, connection: Connection): voi
         nodeIntegration: false,
         contextIsolation: true,
         enableRemoteModule: false,
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, '../preload.js')
       },
     })
-    updateClientWin.loadURL(path.join(__dirname, "../../src/renderer/client/createOrUpdateClientForm.html"));
+    updateClientWin.loadURL(path.join(__dirname, "../../../src/renderer/client/createOrUpdateClientForm.html"));
       updateClientWin.once('ready-to-show', () => {
         updateClientWin.show();
         updateClientWin.webContents.openDevTools();
@@ -103,10 +103,10 @@ export function addClientEvents(win: BrowserWindow, connection: Connection): voi
         nodeIntegration: false,
         contextIsolation: true,
         enableRemoteModule: false,
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, '../preload.js')
       },
     })
-    searchClientWin.loadURL(path.join(__dirname, "../../src/renderer/client/searchClient.html"));
+    searchClientWin.loadURL(path.join(__dirname, "../../../src/renderer/client/searchClient.html"));
       searchClientWin.once('ready-to-show', () => {
         searchClientWin.show();
       });

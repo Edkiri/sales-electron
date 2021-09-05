@@ -1,7 +1,7 @@
 
 
 class OrderTree {
-  constructor(parentId) {
+  constructor(parentId, rate) {
     this.parent = document.getElementById(parentId);
     this.treeContainer = document.createElement('ol');
     this.createHeader();
@@ -32,6 +32,7 @@ class OrderTree {
 
     window.api.recieve("printPreOrderToTree", (orderData) => {
       const treeRow = document.createElement('li');
+      treeRow.classList.add("orderRow");
       treeRow.dataset.productId = orderData.productId;
       const name = document.createElement('span');
       const amount = document.createElement('span');

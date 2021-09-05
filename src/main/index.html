@@ -69,8 +69,11 @@
 <body>
 
   <header>
-    <input type="date" id="mainDate" onchange="handler(event)">
-    <input type="number" >
+    <div id="rateContainer">
+
+    </div>
+    
+    <input type="date" id="mainDate" style="display: block;" onchange="handler(event)">
   </header>
 
   <main>
@@ -114,11 +117,11 @@
 
   </div>
 
-  <a href="../renderer/sale/createOrUpdateSale.html">Nueva Venta</a>
+  <button type="button" id="addSaleBtn">Crear venta</button>
 
   <!-- <button id="testBtn" type="button">Prueba</button> -->
 
-  
+  <script src="./RateFrame.js"></script>
   <script src="./renderer.js"></script>
 </body>
 </html>

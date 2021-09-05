@@ -1,4 +1,4 @@
-import { Product } from "../database/entities/Product";
+import { Product } from "../../database/entities/Product";
 import { Connection } from "typeorm";
 import { BrowserWindow, ipcMain, } from 'electron';
 import * as path from "path";
@@ -14,10 +14,10 @@ export function addOrderEvents(win: BrowserWindow, connection: Connection): void
         nodeIntegration: false,
         contextIsolation: true,
         enableRemoteModule: false,
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, '../preload.js')
       },
     })
-    newOrderWin.loadURL(path.join(__dirname, "../../src/renderer/order/createOrder.html"));
+    newOrderWin.loadURL(path.join(__dirname, "../../../src/renderer/order/createOrder.html"));
     newOrderWin.once('ready-to-show', () => {
       newOrderWin.show();
       newOrderWin.webContents.openDevTools();
