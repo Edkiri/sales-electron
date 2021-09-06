@@ -16,6 +16,12 @@ function getPaymentData() {
   const currencyName = currencySelect.options[currencyIndex].textContent;
   const methodIndex =  methodSelect.options.selectedIndex;
   const methodName = methodSelect.options[methodIndex].textContent;
+  let amount;
+  if(returnCheckbox.checked) {
+    amount = parseFloat(amountInput.value) * (-1);
+  } else {
+    amount = parseFloat(amountInput.value);
+  }
   const paymentData = {
     currency: {
       id: currencySelect.value,
@@ -27,7 +33,7 @@ function getPaymentData() {
     },
     accountId: accountSelect.value,
     rate: rateInput.value,
-    amount: amountInput.value,
+    amount: amount,
     isReturn: returnCheckbox.checked
   }
   return paymentData;

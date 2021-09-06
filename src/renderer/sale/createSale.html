@@ -28,11 +28,39 @@
     <h3>Pagos</h3>
   </div>
 
-  <div class="totalContainer"></div>
+  <div class="totalMainContainer">
+
+    <div class="totalOrdersContainer">
+      <span>Órdenes:</span>
+      <p>
+        <span id="totalOrdersUsd">0</span>$ 
+        (<span id="totalOrdersBs">0</span>bs)
+      </p>
+    </div>
+
+    <div class="totalPaymentsContainer">
+      <span>Pagos:</span>
+      <p>
+        <span id="totalPaymentsUsd">0</span>$ 
+        (<span id="totalPaymentsBs">0</span>bs)
+      </p>
+    </div>
+
+    <div class="totalRemaining">
+      <span>Pendiente:</span>
+      <p>
+        <span id="totalRemainingUsd">0</span>$ 
+        (<span id="totalRemainingBs">0</span>bs)
+      </p>
+    </div>
+
+  </div>
   
+  <script src="../Subject.js"></script>
   <script src="../client/ClientFrame.js"></script>
   <script src="../order/OrderTree.js"></script>
   <script src="../payment/PaymentTree.js"></script>
-  <script src="./createOrUpdateSale.js"></script>
+  <script src="./totalObservers.js"></script>
+  <script src="./createSale.js"></script>
 </body>
 </html>

@@ -1,14 +1,12 @@
-let rate;
-window.api.recieve('setDailyRate', rate => {
-  dailyRate = rate;
-})
 
-class PaymentTree {
+class PaymentTree extends Subject {
   constructor(parentId) {
+    super();
     this.parent = document.getElementById(parentId);
     this.tree = document.createElement('ol');
     this.createHeader()
     this.parent.appendChild(this.tree);
+    this.payments = [];
 
     this.addPayBtn = document.createElement('button');
     this.addPayBtn.textContent = "Pago";
@@ -45,6 +43,8 @@ class PaymentTree {
   }
 
   addPayment(paymentData) {
+    this.payments.push(paymentData);
+    super.notify(this);
     const treeRow = document.createElement('li');
     treeRow.classList.add("paymentRow");
     treeRow.dataset.currencyId = paymentData.currency.id;
@@ -54,7 +54,7 @@ class PaymentTree {
     const currency = document.createElement('span');
     const method = document.createElement('span');
     amount.textContent = paymentData.amount;
-    if (paymentData.isReturn) amount.textContent = `-${paymentData.amount}`;
+    if (paymentData.isReturn) amount.textContent = `${paymentData.amount}`;
     currency.textContent = paymentData.currency.name;
     method.textContent = paymentData.method.name;
     treeRow.append(amount, currency, method);
@@ -67,6 +67,18 @@ class PaymentTree {
       this.addPayment(paymentData);
     })
 
+  }
+
+  getTotalPayments() {
+    let totalPayments = 0;
+    this.payments.forEach(pay => {
+      if(pay.currency.id === "1") {
+        totalPayments += pay.amount / dailyRate;
+      } else {
+        totalPayments += pay.amount;
+      }
+    })
+    return totalPayments;
   }
 
 }

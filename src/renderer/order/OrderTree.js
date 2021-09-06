@@ -1,7 +1,9 @@
 
 
-class OrderTree {
+class OrderTree extends Subject {
   constructor(parentId, rate) {
+    super();
+    this.orders = [];
     this.parent = document.getElementById(parentId);
     this.treeContainer = document.createElement('ol');
     this.createHeader();
@@ -31,6 +33,8 @@ class OrderTree {
   addListeners() {
 
     window.api.recieve("printPreOrderToTree", (orderData) => {
+      this.orders.push(orderData);
+      super.notify(this);
       const treeRow = document.createElement('li');
       treeRow.classList.add("orderRow");
       treeRow.dataset.productId = orderData.productId;
@@ -46,5 +50,12 @@ class OrderTree {
       this.treeContainer.appendChild(treeRow);
     })
 
+    
   }
+
+  getTotalOrders() {
+    let totalOrders = this.orders.reduce((ac, currenct) => ac + currenct.total, 0); 
+    return totalOrders;
+  }
+
 }

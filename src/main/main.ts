@@ -72,7 +72,7 @@ ipcMain.on("setDailyRate", (event, dailyRate) => {
 })
 
 ipcMain.on('createSale', (event) => {
-  win.loadURL(path.join(__dirname, "../../src/renderer/sale/createOrUpdateSale.html"));
+  win.loadURL(path.join(__dirname, "../../src/renderer/sale/createSale.html"));
 })
 
 ipcMain.on("getDailyRate", e => {
