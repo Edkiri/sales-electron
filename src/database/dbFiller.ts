@@ -7,6 +7,7 @@ import { Payment } from "./entities/Payment";
 import { PaymentMethod } from "./entities/PaymentMethod";
 import { Product } from "./entities/Product";
 import { Sale } from "./entities/Sale";
+import { PaymentAccount } from "./entities/PaymentAccount";
 
 // Create payment methods
 const METHODS = [
@@ -145,6 +146,11 @@ export async function fillTestDatabase(connection: Connection) {
         currency: currencies[1],
         method: methods[0],
         rate: 4129000,
+      })
+
+      const account = await connection.getRepository(PaymentAccount).save({
+        owner: "Eduardo Kiriakos",
+        bank: "Mercantil"
       })
     }
 }

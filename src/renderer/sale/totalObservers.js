@@ -9,7 +9,7 @@ class TotalPaymentsObserver {
     let totalUsd = 0;
     let totalBs = 0;
     subject.payments.forEach(pay => {
-      if(pay.currency.id === "1") {
+      if(pay.currency.id != "1") {
         totalBs += pay.amount;
       } else {
         totalUsd += pay.amount;

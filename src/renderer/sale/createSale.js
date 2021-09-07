@@ -31,3 +31,17 @@ paymentTree.subscribe(totalPaymentsObserver);
 
 orderTree.subscribe(totalRemainingObserver);
 paymentTree.subscribe(totalRemainingObserver);
+
+const createSaleBtn = document.getElementById("createSaleBtn");
+
+createSaleBtn.addEventListener('click', () => {
+  const newSaleData = {
+    clientId: clientFrame.client.id,
+    description: document.getElementById("descriptionInput").value,
+    payments: paymentTree.payments,
+    orders: orderTree.orders,
+    totalPayments: paymentTree.getTotalPayments(),
+    totalOrders: orderTree.getTotalOrders(),
+  }
+  window.api.send("sendNewSaleData", newSaleData);
+})

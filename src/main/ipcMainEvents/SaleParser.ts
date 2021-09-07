@@ -1,5 +1,5 @@
 import { Connection } from "typeorm";
-import { Sale } from "../database/entities/Sale";
+import { Sale } from "../../database/entities/Sale";
 import * as dayjs from "dayjs";
 
 export interface SaleMainListRow {

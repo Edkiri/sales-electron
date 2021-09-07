@@ -39,6 +39,6 @@ export class Payment {
     nullable: true
   })
   @JoinColumn({name: "accountId"})
-  account = PaymentAccount;
+  account: PaymentAccount;
   
 }

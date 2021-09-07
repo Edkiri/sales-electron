@@ -75,5 +75,9 @@ function handler(e) {
 
 const addSaleBtn = document.getElementById('addSaleBtn');
 addSaleBtn.onclick = () => {
-  window.api.send('createSale');
+  if(rateFrame.rateSpan.style.display === "none") {
+    console.log("Debes especificar la tasa del día");
+  } else {
+    window.api.send('createSale');
+  }
 }

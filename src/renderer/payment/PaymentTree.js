@@ -72,7 +72,7 @@ class PaymentTree extends Subject {
   getTotalPayments() {
     let totalPayments = 0;
     this.payments.forEach(pay => {
-      if(pay.currency.id === "1") {
+      if(pay.currency.id != "1") {
         totalPayments += pay.amount / dailyRate;
       } else {
         totalPayments += pay.amount;

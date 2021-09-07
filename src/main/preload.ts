@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld(
         "setDailyRate",
         "createSale",
         "getDailyRate",
+        "sendNewSaleData",
 
         
         "verifyClient", 
