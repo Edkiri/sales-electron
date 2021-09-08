@@ -53,12 +53,6 @@ export async function fillTestDatabase(connection: Connection) {
       identityCard: "V-25899242",
       phoneNumber: "0424-816-7122"
     })
-
-    // const otherClient = await connection.getRepository(Client).save({
-    //   name: "Milangela Piazza", 
-    //   identityCard: "V-8443926",
-    //   phoneNumber: "0414-939-9890"
-    // })
   
     const codo = await connection.getRepository(Product).save({
       name: "Codo de 1/2\"",
@@ -78,79 +72,10 @@ export async function fillTestDatabase(connection: Connection) {
       reference: "Tubo Media",
       code: 699842
     })
-  
-    // const sale = await connection.getRepository(Sale).save({
-    //   client: client,
-    //   date: new Date(),
-    //   description: "Esta es la primera venta"
-    // })
-    
-    // const salePayment = await connection.getRepository(Payment).save({
-    //   date: new Date,
-    //   sale: sale,
-    //   amount: 13.0,
-    //   currency: currencies[0],
-    //   method: methods[1],
-    //   rate: 0,
-    // })
-  
-    // const saleReturn = await connection.getRepository(Payment).save({
-    //   date: new Date,
-    //   sale: sale,
-    //   amount: -2100000,
-    //   currency: currencies[1],
-    //   method: methods[2],
-    //   rate: 4200000
-    // })
-  
-    // const order = await connection.getRepository(Order).save({
-    //   sale: sale,
-    //   product: codo,
-    //   amount: 1,
-    //   date: new Date,
-    //   price: codo.price
-    // })
-  
-    // const paymentRepository = connection.getRepository(Payment);
-    // const payments = await paymentRepository
-    //   .createQueryBuilder("payment")
-    //   .leftJoinAndSelect("payment.sale", "sale")
-    //   .where("sale.id = :id", { id: sale.id })
-    //   .getMany();
-    
-    //   const otherSale = await connection.getRepository(Sale).save({
-    //     client: client,
-    //     date: new Date(),
-    //     description: "Esta es la segunda venta"
-    //   })
 
-    //   const otherPayment = await connection.getRepository(Payment).save({
-    //     date: new Date,
-    //     sale: otherSale,
-    //     amount: 50.0,
-    //     currency: currencies[0],
-    //     method: methods[1],
-    //     rate: 0,
-    //   })
-
-    //   const lastSale = await connection.getRepository(Sale).save({
-    //     date: new Date(),
-    //     client: otherClient,
-    //     description: "Esta es la última venta"
-    //   })
-
-    //   const lastPayment = await connection.getRepository(Payment).save({
-    //     date: new Date,
-    //     sale: lastSale,
-    //     amount: 4129000,
-    //     currency: currencies[1],
-    //     method: methods[0],
-    //     rate: 4129000,
-    //   })
-
-      const account = await connection.getRepository(PaymentAccount).save({
-        owner: "Eduardo Kiriakos",
-        bank: "Mercantil"
-      })
-    }
+    const account = await connection.getRepository(PaymentAccount).save({
+      owner: "Eduardo Kiriakos",
+      bank: "Mercantil"
+    })
+  }
 }

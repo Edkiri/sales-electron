@@ -25,10 +25,6 @@ function parseSales(sales: Sale[]): SaleMainListRow[] {
     const totalOrders: number = sale.orders.reduce(
       (ac: number, order) => ac + <number>order.price, 0
     );
-    console.log("Orders: ", sale.orders);
-    console.log("TotalOrders: ", totalOrders);
-    console.log("Payments: ", sale.payments);
-    console.log("TotalPayments: ", totalPayments);
     let totalToPrint = totalOrders;
     const totalSale = totalOrders - totalPayments;
     let state: string = "Finalizada";
