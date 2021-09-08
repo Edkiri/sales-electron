@@ -1,72 +1,61 @@
 
 
 class OrderTree extends Subject {
-  constructor(parentId, rate) {
+  constructor(tree) {
     super();
-    this.orders = [];
-    this.parent = document.getElementById(parentId);
-    this.tree = document.createElement('ol');
-    this.tree.classList.add("orderTree");
-    this.createHeader();
+    this.tree = tree;
+    this.orders = {};
+    this.orderIndexAux = 0;
+
     this.addOrderBtn = document.createElement('button');
     this.addOrderBtn.textContent = "Agregar";
+
     this.removeOrderBtn = document.createElement('button');
     this.removeOrderBtn.textContent = "Eliminar";
     this.removeOrderBtn.disabled = true;
-    this.parent.append(this.tree, this.addOrderBtn, this.removeOrderBtn);
+
+    this.tree.parentElement.append(this.addOrderBtn, this.removeOrderBtn);
 
     this.addListeners();
   }
-  createHeader() {
-    const headerRow = document.createElement('li');
-    headerRow.classList.add("orderHeaderRow");
-    headerRow.innerHTML = `
-      <span>Nombre</span>
-      <span>Cantidad</span>
-      <span>Precio/Unidad</span>
-      <span>Total $</span>
-    `;
-    this.tree.appendChild(headerRow);
-  }
 
   addListeners() {
-
-    
     window.api.recieve("printPreOrderToTree", (orderData) => {
-      this.orders.push(orderData);
+      this.orders[this.orderIndexAux] = orderData;
       super.notify(this);
-      const orderDataString = JSON.stringify(orderData);
       const treeRow = document.createElement('li');
-      treeRow.dataset.orderDataString = orderDataString;
+      treeRow.dataset.orderDataIndex = this.orderIndexAux;
+      this.orderIndexAux++;
       treeRow.classList.add("orderListRow");
       treeRow.innerHTML = `
-      <span>${orderData.productName}</span>
-      <span>${orderData.amount}</span>
-      <span>${orderData.productPrice}</span>
-      <span>${orderData.total}</span>
+        <span>${orderData.productName}</span>
+        <span>${orderData.amount}</span>
+        <span>${orderData.productPrice}</span>
+        <span>${orderData.total}</span>
       `;
       treeRow.onclick = (event) => {
-        let tag;
+        let liTagSelected;
         if (event.target.nodeName==="SPAN"){
-          tag = event.target.parentElement;
+          liTagSelected = event.target.parentElement;
         } else {
-          tag = event.target;
+          liTagSelected = event.target;
         }
-        this.selectRow(tag);
+        this.selectRow(liTagSelected);
       }
       this.tree.appendChild(treeRow);
     })
     
+
     this.addOrderBtn.onclick = () => {
       window.api.send("displayProductsWindow");
     }
 
+    
     this.removeOrderBtn.onclick = () => {
       const selectedRow = document.querySelector(".orderListRow.selected");
-      const orderData = selectedRow.dataset.orderDataString;
-      this.orders = this.orders.filter(order => 
-        JSON.stringify(order) != orderData
-      );
+      const orderDataIndex = selectedRow.dataset.orderDataIndex;
+      delete this.orders[orderDataIndex];
+      super.notify(this);
       selectedRow.remove();
       this.removeOrderBtn.disabled = true;
     }
@@ -96,7 +85,8 @@ class OrderTree extends Subject {
   }
 
   getTotalOrders() {
-    let totalOrders = this.orders.reduce((ac, currenct) => ac + currenct.total, 0); 
+    const ordersList = Object.values(this.orders);
+    const totalOrders = ordersList.reduce((ac, currenct) => ac + currenct.total, 0); 
     return totalOrders;
   }
 

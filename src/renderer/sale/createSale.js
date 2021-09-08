@@ -6,7 +6,9 @@ window.api.recieve('rateValue', rate => {
 
 const paymentTree = new PaymentTree("paymentsContainer");
 
-const orderTree = new OrderTree("ordersContainer");
+const orderTree = new OrderTree(
+  document.getElementById("orderTree")
+);
 
 const clientFrame = new ClientFrame("clientContainer");
 
