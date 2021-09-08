@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+}
+li {
+  list-style: none;
+}
+ol {
+  padding: 0;
+}
+.orderTree {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  border: 1px solid black;
+  margin-bottom: 30px;
+  font-size: 18px;
+  width: 800px;
+  overflow: hidden;
+}
+.orderHeaderRow, .orderListRow {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 50% 1fr 1fr 1fr;
+  padding: 4px;
+}
+.orderHeaderRow span {
+  font-weight: 700;
+}
+.orderListRow:hover {
+  cursor: context-menu;
+  background-color: lightblue;
+}
+.orderListRow.selected {
+  background-color: lightseagreen;
+}
