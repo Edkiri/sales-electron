@@ -65,7 +65,7 @@ function handler(e) {
     // Total Sale
     const totalSale = document.createElement('span');
     totalSale.className = "salesList__row__item";
-    totalSale.textContent = sale.total;
+    totalSale.textContent = sale.totalSale;
     salesListRow.appendChild(totalSale);
 
 

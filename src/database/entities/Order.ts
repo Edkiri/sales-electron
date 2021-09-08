@@ -25,7 +25,7 @@ export class Order {
   date: Date;
 
   @Column({
-    type: "decimal"
+    type: "float"
   })
   price: number;
 

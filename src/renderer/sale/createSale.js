@@ -41,7 +41,7 @@ createSaleBtn.addEventListener('click', () => {
     clientId: clientFrame.client.id,
     description: document.getElementById("descriptionInput").value,
     payments: paymentTree.payments,
-    orders: orderTree.orders,
+    orders: Object.values(orderTree.orders),
     totalPayments: paymentTree.getTotalPayments(),
     totalOrders: orderTree.getTotalOrders(),
   }

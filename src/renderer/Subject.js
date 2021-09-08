@@ -8,11 +8,10 @@ class Subject {
   }
 
   unsubscribe(obs) {
-    this.observers = this.observers.filter(e=> e != obs);
+    this.observers = this.observers.filter(e => e != obs);
   }
 
   notify(o) {
-    // console.log("Notificando: ", o);
     this.observers.forEach(obs => {
       obs.notify(o);
     })

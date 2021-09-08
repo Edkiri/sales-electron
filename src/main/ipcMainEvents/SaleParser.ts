@@ -6,28 +6,44 @@ export interface SaleMainListRow {
   id: number,
   state: string,
   description: string,
-  total: number
+  totalSale: number
 }
 
 function parseSales(sales: Sale[]): SaleMainListRow[] {
   let salesToPrint: SaleMainListRow[] = [];
 
   sales.forEach(sale => {
-    let totalPays: number = 0;
+    let totalPayments: number = 0;
     sale.payments.forEach(pay => {
       if(pay.currency.id != 1) {
         const totalPay = pay.amount / pay.rate;
-        totalPays += totalPay;
+        totalPayments += totalPay;
       } else {
-        totalPays += pay.amount;
+        totalPayments += pay.amount;
       }
     })
-
+    const totalOrders: number = sale.orders.reduce(
+      (ac: number, order) => ac + <number>order.price, 0
+    );
+    console.log("Orders: ", sale.orders);
+    console.log("TotalOrders: ", totalOrders);
+    console.log("Payments: ", sale.payments);
+    console.log("TotalPayments: ", totalPayments);
+    let totalToPrint = totalOrders;
+    const totalSale = totalOrders - totalPayments;
+    let state: string = "Finalizada";
+    if(totalSale < 0) {
+      state = "Vale";
+      totalToPrint = Math.abs(totalSale);
+    } else if (totalSale > 0) {
+      state = "Crédito";
+      totalToPrint = Math.abs(totalSale);
+    }
     const saleToPrint = {
       id: sale.id,
-      state: "Finalizado",
+      state: state,
       description: sale.description,
-      total: totalPays
+      totalSale: totalToPrint
     };
 
     salesToPrint.push(saleToPrint);
@@ -40,6 +56,7 @@ export async function getDailySales (connection: Connection, date: Date): Promis
   const todaySales: Sale[] = await connection.getRepository(Sale)
     .createQueryBuilder("sale")
     .leftJoinAndSelect("sale.payments", "payments")
+    .leftJoinAndSelect("sale.orders", "orders")
     .leftJoinAndSelect("payments.currency", "currency")
     .where("sale.date = :date", { date: targetDate})
     .getMany();

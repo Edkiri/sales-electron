@@ -72,7 +72,7 @@ export function addSaleEvents(win: BrowserWindow, connection: Connection): void 
             product: product,
             amount: <number>orderData.amount,
             date: new Date,
-            price: orderData.total
+            price: <number>parseFloat(orderData.total)
           })
         } catch(err) {
           console.log("Error creando la orden");
