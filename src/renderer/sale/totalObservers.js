@@ -8,7 +8,8 @@ class TotalPaymentsObserver {
   notify(subject) {
     let totalUsd = 0;
     let totalBs = 0;
-    subject.payments.forEach(pay => {
+    const payments = Object.values(subject.payments);
+    payments.forEach(pay => {
       if(pay.currency.id != "1") {
         totalBs += pay.amount;
       } else {

@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../order/styles.css">
+  <link rel="stylesheet" href="../payment/styles.css">
   <title>Nueva Venta</title>
 </head>
 <body>
@@ -35,8 +36,15 @@
   </div>
 
 
-  <div id="paymentsContainer">
+  <div class="paymentContainer">
     <h3>Pagos</h3>
+    <ol id="paymentTree" class="paymentTree">
+      <li class="paymentTreeHeader">
+        <span>Monto</span>
+        <span>Moneda</span>
+        <span>Método</span>
+      </li>
+    </ol>
   </div>
 
   <div class="totalMainContainer">

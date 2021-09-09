@@ -7,30 +7,31 @@ li {
 ol {
   padding: 0;
 }
-.orderTree {
+.paymentTree {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: 120px;
   border: 1px solid black;
   margin-bottom: 30px;
   font-size: 18px;
-  width: 800px;
+  width: 400px;
   overflow-x: hidden;
   overflow-y: scroll;
 }
-.orderHeaderRow, .orderListRow {
+
+.paymentTreeHeader, .paymentTreeRow {
   display: grid;
   width: 100%;
-  grid-template-columns: 50% 1fr 1fr 1fr;
+  grid-template-columns: 45% 1fr 1fr;
   padding: 4px;
 }
-.orderHeaderRow span {
+.paymentTreeHeader span {
   font-weight: 700;
 }
-.orderListRow:hover {
+.paymentTreeRow:hover {
   cursor: context-menu;
   background-color: lightblue;
 }
-.orderListRow.selected {
+.paymentTreeRow.selected {
   background-color: lightseagreen;
 }

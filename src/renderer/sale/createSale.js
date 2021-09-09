@@ -4,7 +4,9 @@ window.api.recieve('rateValue', rate => {
   dailyRate = parseInt(rate);
 })
 
-const paymentTree = new PaymentTree("paymentsContainer");
+const paymentTree = new PaymentTree(
+  document.getElementById("paymentTree")
+);
 
 const orderTree = new OrderTree(
   document.getElementById("orderTree")
@@ -40,7 +42,7 @@ createSaleBtn.addEventListener('click', () => {
   const newSaleData = {
     clientId: clientFrame.client.id,
     description: document.getElementById("descriptionInput").value,
-    payments: paymentTree.payments,
+    payments: Object.values(paymentTree.payments),
     orders: Object.values(orderTree.orders),
     totalPayments: paymentTree.getTotalPayments(),
     totalOrders: orderTree.getTotalOrders(),

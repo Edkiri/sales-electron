@@ -1,77 +1,87 @@
 
 class PaymentTree extends Subject {
-  constructor(parentId) {
+  constructor(olTag) {
     super();
-    this.parent = document.getElementById(parentId);
-    this.tree = document.createElement('ol');
-    this.createHeader()
-    this.parent.appendChild(this.tree);
-    this.payments = [];
+    this.tree = olTag;
+    this.paymentIndexAux = 0;
+    this.payments = {};
 
     this.addPayBtn = document.createElement('button');
     this.addPayBtn.textContent = "Pago";
-    this.addPayBtn.onclick = () => {
-      this.createPayment(false)
-    };
-
+  
     this.addReturnBtn = document.createElement('button');
     this.addReturnBtn.textContent = "Vuelto";
-    this.addReturnBtn.onclick = () => {
-      this.createPayment(true);
-    }
-    this.parent.append(this.addPayBtn, this.addReturnBtn);
+
+    this.removePayBtn = document.createElement('button');
+    this.removePayBtn.textContent = "Eliminar";
+    this.removePayBtn.disabled = true;
+
+    this.tree.parentElement.append(this.addPayBtn, this.addReturnBtn, this.removePayBtn);
     
     this.addListeners();
 
   }
 
-  createHeader() {
-    const headerTree = document.createElement('li');
-    const amount = document.createElement('span');
-    const currency = document.createElement('span');
-    const method = document.createElement('span');
-    amount.textContent = "Monto";
-    currency.textContent = "Moneda";
-    method.textContent = "Método";
-    headerTree.append(amount, currency, method);
-    this.tree.appendChild(headerTree);
-  }
-
   createPayment(isReturn) {
-    
     window.api.send("createPayment", isReturn);
   }
 
   addPayment(paymentData) {
-    this.payments.push(paymentData);
-    super.notify(this);
     const treeRow = document.createElement('li');
-    treeRow.classList.add("paymentRow");
-    treeRow.dataset.currencyId = paymentData.currency.id;
-    treeRow.dataset.methodId = paymentData.method.id;
-    treeRow.dataset.accountId = paymentData.accountId;
-    let amount = document.createElement('span');
-    const currency = document.createElement('span');
-    const method = document.createElement('span');
-    amount.textContent = paymentData.amount;
-    if (paymentData.isReturn) amount.textContent = `${paymentData.amount}`;
-    currency.textContent = paymentData.currency.name;
-    method.textContent = paymentData.method.name;
-    treeRow.append(amount, currency, method);
+    treeRow.classList.add("paymentTreeRow");
+    treeRow.dataset.paymentIndexAux = this.paymentIndexAux;
+
+    treeRow.innerHTML = `
+      <span>${paymentData.amount}</span>
+      <span>${paymentData.currency.name}</span>
+      <span>${paymentData.method.name}</span>
+    `
+
+    treeRow.onclick = (event) => {
+      let liTagSelected;
+      if (event.target.nodeName === "SPAN"){
+        liTagSelected = event.target.parentElement;
+      } else {
+        liTagSelected = event.target;
+      }
+      this.selectRow(liTagSelected);
+    }
+
     this.tree.appendChild(treeRow);
   }
 
   addListeners() {
 
     window.api.recieve('addPaymentToTree', paymentData => {
+      this.payments[this.paymentIndexAux] = paymentData;
+      super.notify(this);
       this.addPayment(paymentData);
+      this.paymentIndexAux++;
     })
+
+    this.addReturnBtn.onclick = () => {
+      this.createPayment(true);
+    }
+
+    this.addPayBtn.onclick = () => {
+      this.createPayment(false)
+    };
+
+    this.removePayBtn.onclick = () => {
+      const selectedRow = document.querySelector('.paymentTreeRow.selected');
+      const rowIndex = selectedRow.dataset.paymentIndexAux;
+      delete this.payments[rowIndex];
+      super.notify(this);
+      selectedRow.remove();
+      this.removePayBtn.disabled = true;
+    }
 
   }
 
   getTotalPayments() {
     let totalPayments = 0;
-    this.payments.forEach(pay => {
+    const payments = Object.values(this.payments);
+    payments.forEach(pay => {
       if(pay.currency.id != "1") {
         totalPayments += pay.amount / dailyRate;
       } else {
@@ -79,6 +89,18 @@ class PaymentTree extends Subject {
       }
     })
     return totalPayments;
+  }
+
+  selectRow(tag) {
+    const selectedRow = document.querySelector(".paymentTreeRow.selected");
+    if (selectedRow == tag) {
+      tag.classList.remove('selected');
+      this.removePayBtn.disabled = true;
+    } else {
+      if(selectedRow) selectedRow.classList.remove('selected');
+      tag.classList.add("selected");
+      this.removePayBtn.disabled = false;
+    };
   }
 
 }
